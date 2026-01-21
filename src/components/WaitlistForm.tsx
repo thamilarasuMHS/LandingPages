@@ -25,6 +25,26 @@ export default function WaitlistForm() {
     setError('');
     setIsSubmitting(true);
 
+    // #region agent log
+    fetch('http://127.0.0.1:7244/ingest/7b8acff3-8416-4359-9207-66e86346ae31', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sessionId: 'debug-session',
+        runId: 'pre-fix',
+        hypothesisId: 'H1',
+        location: 'src/components/WaitlistForm.tsx:handleSubmit:start',
+        message: 'Waitlist submit started',
+        data: {
+          emailProvided: Boolean(email.trim()),
+          nameProvided: Boolean(name.trim()),
+          consent,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+    // #endregion
+
     try {
       const leadData: WaitlistLead = {
         email: email.trim(),
@@ -44,6 +64,25 @@ export default function WaitlistForm() {
       trackWaitlistConversion(email);
       setIsSuccess(true);
     } catch (err) {
+      // #region agent log
+      fetch('http://127.0.0.1:7244/ingest/7b8acff3-8416-4359-9207-66e86346ae31', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sessionId: 'debug-session',
+          runId: 'pre-fix',
+          hypothesisId: 'H1',
+          location: 'src/components/WaitlistForm.tsx:handleSubmit:error',
+          message: 'Waitlist submit failed',
+          data: {
+            errorName: err instanceof Error ? err.name : 'unknown',
+            errorMessage: err instanceof Error ? err.message : String(err),
+          },
+          timestamp: Date.now(),
+        }),
+      }).catch(() => {});
+      // #endregion
+
       console.error('Waitlist submission error:', err);
       setError('Something went wrong. Please try again.');
     } finally {

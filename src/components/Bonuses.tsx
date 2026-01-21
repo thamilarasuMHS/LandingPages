@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
+import WaitlistModal from './WaitlistModal';
+import { abTestConfig } from '../config/abTestConfig';
 
 export default function Bonuses() {
   const [visibleCards, setVisibleCards] = useState<number[]>([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -87,7 +90,7 @@ export default function Bonuses() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {bonuses.map((bonus, index) => (
+            {bonuses.slice(0, 3).map((bonus, index) => (
               <div
                 key={index}
                 ref={(el) => (cardsRef.current[index] = el)}
@@ -124,6 +127,49 @@ export default function Bonuses() {
               </div>
             ))}
           </div>
+          
+          <div className="flex flex-wrap justify-center gap-6 mb-8 lg:flex-nowrap">
+            {bonuses.slice(3, 5).map((bonus, index) => {
+              const actualIndex = index + 3;
+              return (
+                <div
+                  key={actualIndex}
+                  ref={(el) => (cardsRef.current[actualIndex] = el)}
+                  className={`
+                    bg-white rounded-2xl p-6 border-2 border-purple-100
+                    hover:border-purple-400 hover:shadow-2xl
+                    transition-all duration-500 hover:-translate-y-2
+                    w-full md:w-[calc(50%-12px)] lg:w-auto lg:max-w-sm
+                    ${
+                      visibleCards.includes(actualIndex)
+                        ? 'opacity-100 translate-y-0'
+                        : 'opacity-0 translate-y-8'
+                    }
+                  `}
+                  style={{
+                    transitionDelay: visibleCards.includes(actualIndex) ? '0ms' : `${actualIndex * 150}ms`
+                  }}
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <div className="w-16 h-16 bg-gradient-to-br from-[#7B2FFF] to-[#C65BFF] rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg transform hover:rotate-12 transition-transform duration-300">
+                      <span className="text-3xl">{bonus.emoji}</span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="inline-block bg-gradient-to-r from-green-400 to-emerald-500 text-white px-4 py-1.5 rounded-full text-sm font-bold mb-2 shadow-md">
+                        {bonus.value}
+                      </div>
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-[#333333] mb-3">
+                    {bonus.title}
+                  </h3>
+                  <p className="text-[#555555] leading-relaxed">
+                    {bonus.description}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
 
           <div className="bg-gradient-to-r from-purple-100 via-pink-100 to-purple-100 rounded-2xl p-6 mb-12 text-center shadow-lg animate-fade-in-up">
             <p className="text-lg text-[#333333] font-semibold">
@@ -134,7 +180,10 @@ export default function Bonuses() {
           </div>
 
           <div className="text-center">
-            <button className="bg-gradient-to-r from-[#7B2FFF] to-[#C65BFF] text-white px-10 py-5 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 group">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-gradient-to-r from-[#7B2FFF] to-[#C65BFF] text-white px-10 py-5 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 group"
+            >
               <span className="inline-flex items-center gap-2">
                 Claim Your Bonuses Now
                 <span className="text-xl group-hover:animate-bounce">🎉</span>
@@ -143,6 +192,12 @@ export default function Bonuses() {
           </div>
         </div>
       </div>
+
+      <WaitlistModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        variants={abTestConfig}
+      />
 
       <style>{`
         @keyframes fade-in {

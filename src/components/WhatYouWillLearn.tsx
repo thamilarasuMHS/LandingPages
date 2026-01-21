@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { Brain, Sparkles, Heart, Target } from 'lucide-react';
+import AppointmentModal from './AppointmentModal';
 
 export default function WhatYouWillLearn() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const learnings = [
     {
       icon: Brain,
@@ -60,12 +63,20 @@ export default function WhatYouWillLearn() {
           </div>
 
           <div className="text-center">
-            <button className="bg-gradient-to-r from-[#7B2FFF] to-[#C65BFF] text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-gradient-to-r from-[#7B2FFF] to-[#C65BFF] text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+            >
               Secure Your Spot Now
             </button>
           </div>
         </div>
       </div>
+
+      <AppointmentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </section>
   );
 }

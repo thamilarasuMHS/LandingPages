@@ -17,12 +17,13 @@ export default function MeetCoach() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="flex justify-center">
               <div className="relative">
-                <div className="absolute inset-0 bg-white/20 rounded-3xl blur-2xl"></div>
-                <div className="relative w-full max-w-md aspect-square rounded-3xl bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm border-4 border-white/30 overflow-hidden flex items-center justify-center">
-                  <div className="w-full h-full bg-gradient-to-br from-purple-300 to-purple-500 opacity-40"></div>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-white text-2xl font-semibold">Gayathri Shivaram</span>
-                  </div>
+                <div className="absolute inset-0 bg-white/20 rounded-full blur-2xl"></div>
+                <div className="relative w-80 h-80 md:w-[450px] md:h-[450px] rounded-full bg-gradient-to-br from-white/20 to-white/5 backdrop-blur-sm border-4 border-white/30 overflow-hidden shadow-2xl">
+                  <img
+                    src="/dr_edited.avif"
+                    alt="Doctor Formar"
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               </div>
             </div>
@@ -30,7 +31,7 @@ export default function MeetCoach() {
             <div className="text-white space-y-6">
               <div>
                 <h3 className="text-3xl md:text-4xl font-bold mb-2">
-                  Gayathri Shivaram
+                  Dr. PrabhakarRaj
                 </h3>
                 <p className="text-xl opacity-90 mb-6">
                   Healing & Manifestation Coach

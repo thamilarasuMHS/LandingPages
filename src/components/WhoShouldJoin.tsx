@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { CheckCircle2 } from 'lucide-react';
+import AppointmentModal from './AppointmentModal';
 
 export default function WhoShouldJoin() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const benefits = [
     'Wake up with clarity and purpose',
     'Attract wealth, abundance, opportunities',
@@ -36,12 +39,20 @@ export default function WhoShouldJoin() {
           </div>
 
           <div className="text-center">
-            <button className="bg-gradient-to-r from-[#7B2FFF] to-[#C65BFF] text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="bg-gradient-to-r from-[#7B2FFF] to-[#C65BFF] text-white px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300"
+            >
               Yes, I Want To Transform My Life!
             </button>
           </div>
         </div>
       </div>
+
+      <AppointmentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </section>
   );
 }

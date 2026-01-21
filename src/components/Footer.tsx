@@ -1,6 +1,9 @@
+import { useState } from 'react';
 import { Mail, Phone } from 'lucide-react';
+import AppointmentModal from './AppointmentModal';
 
 export default function Footer() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const currentYear = new Date().getFullYear();
 
   return (
@@ -91,7 +94,10 @@ export default function Footer() {
             </div>
 
             <div className="text-center">
-              <button className="bg-white text-[#7B2FFF] px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 mb-6">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-white text-[#7B2FFF] px-10 py-4 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all duration-300 mb-6"
+              >
                 Register For Masterclass Now
               </button>
               <p className="text-white/80">
@@ -101,6 +107,11 @@ export default function Footer() {
           </div>
         </div>
       </div>
+
+      <AppointmentModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </footer>
   );
 }
